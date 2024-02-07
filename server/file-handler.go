@@ -20,7 +20,6 @@ func CreateOrOpenFile(filename string) (*os.File, error) {
 
 	_, err := os.Stat(filename)
 	if err != nil && !os.IsNotExist(err) {
-		fmt.Println("error different from nil and err != from not exist")
 		return nil, err
 	}
 

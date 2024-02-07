@@ -15,7 +15,6 @@ func SaveCache(filename string, cache *model.PiecesCache) error {
 		return err
 	}
 
-	// if the error is that the file does not exist, then create a new cache
 	if os.IsNotExist(err) {
 		file, err := os.Create(filename)
 		if err != nil {
@@ -41,16 +40,13 @@ func SaveCache(filename string, cache *model.PiecesCache) error {
 	return nil
 }
 
-// LoadCache loads the cache from a file
 func LoadCache(filename string) (*model.PiecesCache, error) {
-	// load the cache from a file
+
 	_, err := os.Stat(filename)
 	if err != nil && !os.IsNotExist(err) {
-		fmt.Println("error different from nil and err != from not exist")
 		return nil, err
 	}
 
-	// if the error is that the file does not exist, then create a new cache
 	if os.IsNotExist(err) {
 		file, err := os.Create(filename)
 		if err != nil {

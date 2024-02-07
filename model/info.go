@@ -18,7 +18,6 @@ func (i *Info) PiecesToByteArray() [][20]byte {
 	hashLen := 20 // Length of SHA-1 hash
 	buf := []byte(i.Pieces)
 	if len(buf)%hashLen != 0 {
-		// err := fmt.Errorf("Received malformed pieces of length %d", len(buf))
 		return nil
 	}
 	numHashes := len(buf) / hashLen
