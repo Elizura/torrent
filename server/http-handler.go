@@ -17,7 +17,7 @@ func GetPeersFromTrackers(torrent *model.Torrent) ([]model.Peer, error) {
 		return nil, err
 	}
 
-	peers, err := getPeersFromTrackersHelper(httpTrackerURLs)
+	peers, err := getPeersFromTrackers(httpTrackerURLs)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,7 @@ func getTrackerUrl(torrent *model.Torrent) ([]string, error) {
 	URL.RawQuery = requestParams.Encode()
 	URLs = append(URLs, URL.String())
 
+	//check if there are other trackers and collect
 	for _, tracker := range torrent.AnnounceList {
 
 		URL, err := url.Parse(tracker[0])
@@ -66,7 +67,7 @@ func getTrackerUrl(torrent *model.Torrent) ([]string, error) {
 	return URLs, nil
 }
 
-func getPeersFromTrackersHelper(URLs []string) ([]model.Peer, error) {
+func getPeersFromTrackers(URLs []string) ([]model.Peer, error) {
 	peers := []model.Peer{}
 	for _, URL := range URLs {
 		response, err := getPeerFromURL(URL)
