@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package bittorrent;
+option go_package = "./rpc";
+
+
+service DownloadFile {  
+  rpc Download (DownloadRequest) returns (DownloadReply) {}
+}
+
+message DownloadRequest {}
+
+message DownloadReply { }
