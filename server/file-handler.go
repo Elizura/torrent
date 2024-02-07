@@ -9,44 +9,11 @@ import (
 )
 
 func CreateFile(torrent *model.Torrent) (*os.File, string, error) {
-	fmt.Println("Creating folder structure for", torrent.Info.Name)
-
-	if torrent.Info.Files != nil {
-
-		for idx, filePath := range torrent.Info.Files {
-
-			absPath, err := filepath.Abs("downloads" + "/" + torrent.Info.Name + "/" + filePath.Path[0])
-			if err != nil {
-				return nil, "", err
-			}
-
-			dirPath := filepath.Dir(absPath)
-
-			if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
-				return nil, "", err
-			}
-
-			fmt.Println("Creating file", idx)
-			file, err := os.Create(absPath)
-			if err != nil {
-				return nil, "", err
-			}
-			defer file.Close()
-		}
-
-		outFile, err := CreateOrOpenFile("downloads" + "/" + torrent.Info.Name + ".temp")
-		if err != nil {
-			return nil, "", err
-		}
-		return outFile, "", err
-	} else {
-
-		outFile, err := CreateOrOpenFile("downloads" + "/" + torrent.Info.Name)
-		if err != nil {
-			return nil, "", err
-		}
-		return outFile, "", err
+	outFile, err := CreateOrOpenFile("downloads" + "/" + torrent.Info.Name)
+	if err != nil {
+		return nil, "", err
 	}
+	return outFile, "", err
 }
 
 func CreateOrOpenFile(filename string) (*os.File, error) {
