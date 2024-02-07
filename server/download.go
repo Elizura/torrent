@@ -54,10 +54,7 @@ func StartDownload(filename string) {
 
 	piecesCache, err := LoadCache(outFile.Name() + ".json")
 	if err != nil {
-
-		piecesCache = &model.PiecesCache{}
-		fmt.Println("Error loading file")
-		return
+		panic(err)
 	}
 
 	piecesHashList := torrent.Info.PiecesToByteArray()
@@ -65,7 +62,7 @@ func StartDownload(filename string) {
 	resultChannel := make(chan *PieceResult)
 
 	for idx, hash := range piecesHashList {
-		length := torrent.CalcRequestSize(idx)
+		length := torrent.CalculateRange(idx)
 
 		downloadChannel <- &PieceRequest{Index: idx, Hash: hash, Length: length}
 	}

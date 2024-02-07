@@ -12,10 +12,10 @@ type Torrent struct {
 	AnnounceList [][]string `bencode:"announce-list,omitempty"`
 	Comment      string     `bencode:"comment,omitempty"`
 	CreatedBy    string     `bencode:"created by,omitempty"`
-	CreationDate int64      `bencode:"creation date,omitempty"`	
-	Encoding string `bencode:"encoding,omitempty"`
-	Info     Info   `bencode:"info,omitempty"`
-	InfoHash [20]byte
+	CreationDate int64      `bencode:"creation date,omitempty"`
+	Encoding     string     `bencode:"encoding,omitempty"`
+	Info         Info       `bencode:"info,omitempty"`
+	InfoHash     [20]byte
 }
 
 func (t *Torrent) GenerateInfoHash() {
@@ -30,18 +30,16 @@ func (t *Torrent) GenerateInfoHash() {
 	t.InfoHash = hash
 }
 
-
-func (t *Torrent) CalculateRange(index int) (begin int, end int) {
-	begin = index * int(t.Info.PieceLength)
-	end = begin + int(t.Info.PieceLength)
+func (t *Torrent) CalculateRange(index int) int {
+	begin := index * int(t.Info.PieceLength)
+	end := begin + int(t.Info.PieceLength)
 	if end > int(t.Info.Length) {
 		end = int(t.Info.Length)
 	}
-	return begin, end
-}
-
-
-func (t *Torrent) CalcRequestSize(index int) int {
-	begin, end := t.CalculateRange(index)
 	return end - begin
 }
+
+// func (t *Torrent) CalcRequestSize(index int) int {
+// 	begin, end := t.CalculateRange(index)
+// 	return end - begin
+// }
