@@ -26,6 +26,7 @@ func (message *Message) Serialize() []byte {
 
 
 // deserialize the message byte array into a Message struct
+// message Length - 4byte, Id- 1byte, pyload -4byte
 func DeserializeMessage(conn net.Conn) (*Message, error) {
 	length := make([]byte, 4)
 	_, err := io.ReadFull(conn, length)
@@ -35,7 +36,6 @@ func DeserializeMessage(conn net.Conn) (*Message, error) {
 			fmt.Println("Connection closed")
 			return nil, err
 		}
-		fmt.Println("Error reading message length: %s", err)
 		return nil, err
 	}
 
@@ -47,13 +47,11 @@ func DeserializeMessage(conn net.Conn) (*Message, error) {
 
 	buffer := make([]byte, msgLength)
 	_, err = io.ReadFull(conn, buffer)
-	// _, err = conn.Read(buffer)
 	if err != nil {
 		fmt.Printf("Error reading message: %s", err)
 		return nil, err
 	}
 
-	// fmt.Println("Message length: --------> ", msgLength)
 	message := &Message{}
 
 	if msgLength == 0 {
