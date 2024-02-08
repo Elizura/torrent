@@ -13,7 +13,6 @@ type Message struct {
 	Payload []byte `bencode:"payload"`
 }
 
-// serialize the message into a byte array
 // <msgLength 4 byte> <message id 1 byte> <payload>
 func (message *Message) Serialize() []byte {
 	msgLength := uint32(len(message.Payload) + 1) // +1 for the message id
@@ -70,6 +69,5 @@ func DeserializeMessage(conn net.Conn) (*Message, error) {
 	message.Length = msgLength
 	message.MessageID = buffer[0]
 	message.Payload = buffer[1:]
-	// fmt.Println("Successfully parsed the message")
 	return message, nil
 }

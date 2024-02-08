@@ -19,7 +19,7 @@ func ClientFactory(peer model.Peer, torrent model.Torrent) (*model.Client, error
 }
 
 func createClient(peer model.Peer, torrent model.Torrent) (*model.Client, error) {
-	conn, err := connectToPeer(peer, torrent)
+	conn, err := net.DialTimeout("tcp", peer.String(), common.CONNECTION_TIMEOUT)
 	if err != nil {
 		return nil, err
 	}
@@ -42,16 +42,6 @@ func createClient(peer model.Peer, torrent model.Torrent) (*model.Client, error)
 	}
 
 	return client, nil
-}
-
-func connectToPeer(peer model.Peer, torrent model.Torrent) (net.Conn, error) {
-
-	conn, err := net.DialTimeout("tcp", peer.String(), common.CONNECTION_TIMEOUT)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn, nil
 }
 
 func ShakeHandWithPeer(torrent model.Torrent, peer model.Peer, clientID string, conn net.Conn) error {

@@ -11,16 +11,21 @@ type HandShake struct {
 	PeerID   [20]byte `bencode:"peer_id"` 
 }
 
-
-
+//format to a similar format
+// \x13BitTorrent protocol\x00\x00\x00\x00\x00\x00\x00\x00\x86\xd4\xc8\x00\x24\xa4\x69\xbe\x4c\x50\xbc\x5a\x10\x2c\xf7\x17\x80\x31\x00\x74-TR2940-k8hj0wgej6ch
 func (handShake *HandShake) Serialize() []byte {
 	
 	buffer := make([]byte, 49+len(handShake.Pstr))
+	//put the pstr len -> 1 byte
 	buffer[0] = byte(len(handShake.Pstr))
+	//copy pstr -> BitTorrent protocol
 	copy(buffer[1:], []byte(handShake.Pstr))
+	// 8 bytes reserve
 	copy(buffer[1+len(handShake.Pstr):], make([]byte, 8))
+	//copy Info Hash
 	copy(buffer[1+len(handShake.Pstr)+8:], handShake.InfoHash[:])
-	copy(buffer[1+len(handShake.Pstr)+8+20:], handShake.PeerID[:])
+	// copy the peer Id
+	copy(buffer[1+len(handShake.Pstr)+28:], handShake.PeerID[:])
 
 	return buffer
 }
@@ -58,7 +63,6 @@ func (h *HandShake) Send(conn net.Conn) (*HandShake, error) {
 	buffer = make([]byte, 68)
 	_, err = conn.Read(buffer)
 	if err != nil {
-		fmt.Println("Error reading handshake response")
 		return &HandShake{}, err
 	}
 
