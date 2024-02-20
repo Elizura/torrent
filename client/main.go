@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"log"
+	"sync"
 	"time"
 
 	pb "simplebittorrent/rpc"
@@ -30,9 +31,19 @@ func main() {
 	}
 	defer conn.Close()
 	c := pb.NewDownloadFileClient(conn)
+	var wg sync.WaitGroup
+	wg.Add(1)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
-	c.Download(ctx, &pb.DownloadRequest{})
+
+	go func() {
+		defer wg.Done()
+		if _, err := c.Download(ctx, &pb.DownloadRequest{}); err != nil {
+			log.Fatalf("error downloading: %v", err)
+		}
+	}()
+
+	wg.Wait()
 }

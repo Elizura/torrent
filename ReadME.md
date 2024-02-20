@@ -25,19 +25,6 @@ BitTorrent possess several features of distributed systems:
     Utilizing Remote Procedure Calls (RPC), our BitTorrent network facilitates seamless communication and coordination among peers. This integration streamlines the sharing process by enabling efficient exchange of information and resource management within the decentralized network.
 
 
-
-
-
-
-Decentralization
-Scalability
-Fault tolerance
-Load balancing
-Self-organization
-Integration of caching
-Utilization of RPC
-
-
 Group members
 
 1. Abenezer Melaku UGR/6003/13
