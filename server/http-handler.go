@@ -1,6 +1,7 @@
 package server
 
 import (
+	"net"
 	"net/http"
 	"net/url"
 	"simplebittorrent/common"
@@ -21,10 +22,10 @@ func GetPeersFromTrackers(torrent *model.Torrent) ([]model.Peer, error) {
 	if err != nil {
 		return nil, err
 	}
-	// peers = []model.Peer{
-	// 	{IP: net.IP([]byte{192, 168, 82, 111}), Port: 6881},
-	// 	{IP: net.IP([]byte{192, 168, 202, 94}), Port: 6881},
-	// }
+	peers = []model.Peer{
+		{IP: net.IP([]byte{192, 168, 81, 1}), Port: 6881},
+		// {IP: net.IP([]byte{192, 168, 202, 94}), Port: 6881},
+	}
 
 	return peers, nil
 }

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/inancgumus/screen"
 	// "github.com/inancgumus/screen"
 )
 
@@ -101,8 +102,8 @@ func StoreDownloadedPieces(donePieces int, torrent model.Torrent, resultChannel 
 
 		percent := float64(len(piecesCache.Pieces)) / float64(len(torrent.Info.PiecesToByteArray())) * 100
 		numWorkers := runtime.NumGoroutine() - 1
-		// screen.Clear()
-		// screen.MoveTopLeft()
+		screen.Clear()
+		screen.MoveTopLeft()
 		fmt.Println(strings.Repeat("=", int(percent)) + ">")
 		log.Printf("Downloading... (%0.2f%%) Active Peers: %d\n", percent, numWorkers)
 	}
